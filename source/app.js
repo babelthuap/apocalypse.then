@@ -11,9 +11,13 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
       templateUrl: 'home/home.html',
       controller: 'homeCtrl'
     })
-
+    .state('game', {
+      url: '/game',
+      templateUrl: 'game/game.html',
+      controller: 'gameCtrl'
+    })
 
   $authProvider.google({
-    clientId: '167830915916-66jqfp5n2p922m33hu8rdn87apmjn4el.apps.googleusercontent.com'
+    clientId: '403356814232-l0l5edtnt2uamllctq4eeuflrr4t395d.apps.googleusercontent.com'
   });
 });

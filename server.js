@@ -18,11 +18,11 @@ app.set('view engine', 'ejs');
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded( {extended: true} ));
 app.use(bodyParser.json());
-app.use(express.static('source')); // NEEDS TO BE 'PUBLIC'!!!!!!
+app.use(express.static('public'));
 
 // ROUTES
 app.use('/', require('./routes/index'));
-// app.use('/auth', require('./routes/auth'));
+app.use('/auth', require('./routes/auth'));
 // app.use('/users', require('./routes/users'));
 
 // 404 HANDLER
