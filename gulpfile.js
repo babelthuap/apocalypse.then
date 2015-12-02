@@ -14,6 +14,7 @@ const paths = {
   filesrc: 'source/**/*',
   codesrc: 'source/**/*.js',
   htmlsrc: 'source/**/*.html',
+  csssrc: 'source/**/*.css',
   dest: 'public'
 }
 
@@ -30,6 +31,7 @@ gulp.task('build', ['clean', 'bower'], function() {
     .pipe(ngAnnotate())
     .pipe(uglify())
     .pipe(addsrc(paths.htmlsrc))
+    .pipe(addsrc(paths.csssrc))
     .pipe(gulp.dest(paths.dest))
     .on('error', gutil.log);
 });
