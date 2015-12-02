@@ -1,6 +1,7 @@
 .cell {
+  /* add variable for cell height & width later */
   border: 1px solid #000;
-  width: 10%;
-  height: 10vw;
+  width: calc(100%/10);
+  height: calc(100vw/10);
   display: inline-block;
 }

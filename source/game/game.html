@@ -13,6 +13,8 @@
 <div class="cell"></div>
 <div class="cell"></div> -->
 
-<div ng-repeat="row in gameboard track by $index">
-  <div class="cell" ng-repeat='column in row track by $index'>{{column}}</div>
+<div  ng-repeat="row in gameboard track by $index">
+  <div class="cell" ng-repeat='column in row track by $index'>
+    {{column}}
+  </div>
 </div>
