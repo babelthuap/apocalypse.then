@@ -2,10 +2,15 @@
 
 var app = angular.module('app');
 
-app.controller('gameCtrl', function($scope, $auth, $state, GameService) {
+app.controller('gameCtrl', function($scope, $auth, $state, GameService, socket) {
   if (!$auth.isAuthenticated()) return $state.go('home');
 
   console.log('gameCtrl running');
+
+  // var socket = io.connect('http://localhost:3000');
+  socket.on('message', function(data){
+    console.log(data);
+  })
 
   $scope.logout = () => {
     $auth.logout();
@@ -64,7 +69,7 @@ app.controller('gameCtrl', function($scope, $auth, $state, GameService) {
     39: () => {
       var loc = $scope.player.location;
       var newX = loc[1] + 1;
-      changePositionTo(loc[0], clamp(newX, 0, width - 1)); // clamp keeps position in range
+      changePositionTo(loc[0], clamp(newX, 0, width - 1));
     },
     40: () => {
       var loc = $scope.player.location;
@@ -77,12 +82,5 @@ app.controller('gameCtrl', function($scope, $auth, $state, GameService) {
     console.log(key);
     moveOnKey[key]();
   })
-
-  // $scope.$watch('player', function(newVal, oldVal){
-  //   console.log('newVal', newVal, 'oldVal', oldVal);
-  //   var y = $scope.player.location[0];
-  //   var x = $scope.player.location[1];
-  //   $scope.gameboard[y][x] = $scope.player.name;
-  // })
 
 })

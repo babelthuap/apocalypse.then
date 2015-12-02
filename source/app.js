@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('app', ['satellizer', 'ui.router']);
+var app = angular.module('app', ['satellizer', 'ui.router', 'btford.socket-io']);
 
 app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
   $urlRouterProvider.otherwise('/');
