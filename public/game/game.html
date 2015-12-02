@@ -2,31 +2,8 @@
   <button ng-click="logout()" class="btn btn-default">Log out</button>
 </p>
 
-<!-- <div class="cell"></div>
-<div class="cell"></div>
-<div class="cell"></div>
-<div class="cell"></div>
-<div class="cell"></div>
-<div class="cell"></div>
-<div class="cell"></div>
-<div class="cell"></div>
-<div class="cell"></div>
-<div class="cell"></div> -->
-
 <div  ng-repeat="row in gameboard track by $index">
-  <div class="cell" ng-repeat='column in row track by $index'>
-    {{column}}
+  <div class="cell" ng-repeat='cell in row track by $index'>
+    {{cell}}
   </div>
 </div>
-
-
-<script>
-'use strict';
-console.log('here')
-var socket = io.connect('http://localhost:3000');
-
-socket.on('message', function(data){
-  console.log(data);
-})
-
-</script>
