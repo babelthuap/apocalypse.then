@@ -13,14 +13,53 @@ var server = http.Server(app);
 
 var io = require('socket.io')(server);
 
+var User = require('./models/user');
+
+// rand # in interval [min, max)
+var rand = (min, max) => min + Math.floor((max - min) * Math.random());
+
+var cell = {
+  player: null,
+  zombie: false
+};
+
+var HEIGHT = 5;
+var WIDTH = 10;
+var gameboard = [];
+
+// generate fresh gameboard
+for (var row = 0; row < HEIGHT; row++) {
+  var newRow = []
+  for (var col = 0; col < WIDTH; col++) {
+    newRow.push( JSON.parse(JSON.stringify(cell)) );
+  }
+  gameboard.push(newRow);
+}
+
 io.on('connection', function(socket){
   console.log('connected');
-  socket.emit('message', 'hello');
+  socket.on('keypress', data => console.log(data));
+  socket.on('userlogin', id => {
+    console.log('userlogin:', id);
+    User.findById(id, (err, user) => {
+      if (err) return;
+
+      var name = user.displayName;
+      var loc = [rand(0, HEIGHT), rand(0, WIDTH)];
+      gameboard[loc[0]][loc[1]].player = 'name';
+
+      io.emit('boardUpdate', gameboard);
+    })
+  }); 
+
+
 })
+
+
+
 
 var mongoose = require('mongoose');
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/apocalypse');
-
 
 app.set('view engine', 'ejs');
 

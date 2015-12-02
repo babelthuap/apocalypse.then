@@ -56,7 +56,7 @@ router.post('/google', function(req, res) {
             user.displayName = user.displayName || profile.name;
             user.save(function() {
               var token = user.createJWT();
-              res.send({ token: token });
+              res.send({ token: token, id: user._id });
             });
           });
         });
@@ -64,15 +64,15 @@ router.post('/google', function(req, res) {
         // Step 3b. Create a new user account or return an existing one.
         User.findOne({ google: profile.sub }, function(err, existingUser) {
           if (existingUser) {
-            return res.send({ token: existingUser.createJWT() });
+            return res.send({ token: existingUser.createJWT(), id: existingUser._id });
           }
           var user = new User();
           user.google = profile.sub;
           user.picture = profile.picture.replace('sz=50', 'sz=200');
           user.displayName = profile.name;
-          user.save(function(err) {
+          user.save(function(err, createdUser) {
             var token = user.createJWT();
-            res.send({ token: token });
+            res.send({ token: token, id: createdUser._id });
           });
         });
       }

@@ -12,7 +12,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
       controller: 'homeCtrl'
     })
     .state('game', {
-      url: '/game',
+      url: '/game/:id',
       templateUrl: 'game/game.html',
       controller: 'gameCtrl'
     })

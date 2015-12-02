@@ -4,6 +4,6 @@
 
 <div  ng-repeat="row in gameboard track by $index">
   <div class="cell" ng-repeat='cell in row track by $index'>
-    {{cell}}
+    {{cell.player || 'X'}}
   </div>
 </div>
