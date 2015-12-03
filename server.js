@@ -218,6 +218,13 @@ app.set('view engine', 'ejs');
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded( {extended: true} ));
 app.use(bodyParser.json());
+
+// Force HTTPS on Heroku
+app.use(function(req, res, next) {
+  var protocol = req.get('x-forwarded-proto');
+  protocol == 'https' ? next() : res.redirect('https://' + req.hostname + req.url);
+});
+
 app.use(express.static('public'));
 
 // ROUTES
