@@ -25,8 +25,8 @@ var cell = {
   zombie: null
 };
 
-var HEIGHT = 4;
-var WIDTH = 7;
+var HEIGHT = 14;
+var WIDTH = 32;
 var gameboard = [];
 
 // generate fresh gameboard
@@ -70,8 +70,8 @@ io.on('connection', function(socket){
     User.findById(id, (err, user) => {
       if (err) return;
 
-      // OH NO! A ZOMBIE!
-      zombie();
+    // OH NO! A ZOMBIE!
+    zombie();
 
       var name = user.displayName;
       var loc = [rand(0, HEIGHT), rand(0, WIDTH)]; // random location

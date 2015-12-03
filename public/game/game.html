@@ -3,11 +3,15 @@
   <button ng-click="logout()" class="btn btn-default">Log out</button>
 </p>
 
-<table>
-  <tr ng-repeat="row in gameboard track by $index">
-    <td class="cell" ng-repeat='cell in row track by $index'>
-      <img class="avatar" ng-src="{{cell.picture}}" ng-if="cell.picture">
-      {{cell.picture || (cell.zombie ? 'ZOMBIE' : '')}}
-    </td>
-  </tr>
-</table>
+<div class="background">
+  <table>
+    <tr ng-repeat="row in gameboard track by $index">
+      <td class="cell" ng-repeat='cell in row track by $index'>
+        <img class="avatar" alt="player" ng-src="{{cell.picture}}" ng-if="cell.picture">
+        <img class="zombie" src="http://vignette2.wikia.nocookie.net/megamitensei/images/7/71/SMT_IF_zombie_teacher_sprite.gif" alt="zombie" ng-if="cell.zombie">
+
+        <!-- {{cell.picture || (cell.zombie ? 'ZOMBIE' : '')}} -->
+      </td>
+    </tr>
+  </table>  
+</div>

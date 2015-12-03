@@ -1,15 +1,49 @@
 .cell {
   /* add variable for cell height & width later */
-  /*border: 1px solid #000;*/
-  width: calc(100vw/10);
-  height: calc(100vw/10);
+  /*border: 1px solid white;*/
+  width: calc(100vw/33);
+  height: calc(100vw/33);
   display: inline-block;
-  background-color: blue;
+  /*background-color: blue;*/
   color: white;
+  margin: 0;
+  padding: 0;
 }
 
 .avatar {
-  height: calc(100vw/10);
-  width: calc(100vw/10);
+  height: calc(100vw/33);
+  width: calc(100vw/33);
   border-radius: 50%;
+}
+
+.zombie {
+  height: calc(100vw/33);
+}
+
+body {
+  background-color: black;
+  color: white;
+  text-align: center;
+  /*font-family: 'Permanent Marker', cursive;*/
+  /*font-family: 'Rock Salt', cursive;*/
+  /*font-family: 'Nothing You Could Do', cursive;*/
+  /*font-family: 'Reenie Beanie', cursive;*/
+  font-family: 'Annie Use Your Telescope', cursive;
+  /*font-family: 'The Girl Next Door', cursive;*/
+}
+
+table {
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+.background {
+  background-image: url("http://www.ricknightmare.com/wp-content/uploads/2013/09/horror-writing-BG-5.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.loginScreen {
+  width: 50%;
+  margin: 0 auto;
 }
