@@ -59,7 +59,11 @@ function zombie() {
       loc = newLoc;
     }
 
-  }, 500);
+  }, rand(300, 1000));
+}
+
+for (var i = 0; i < HEIGHT; i++){
+  zombie();
 }
 
 io.on('connection', function(socket){
@@ -70,8 +74,6 @@ io.on('connection', function(socket){
     User.findById(id, (err, user) => {
       if (err) return;
 
-    // OH NO! A ZOMBIE!
-    zombie();
 
       var name = user.displayName;
       var loc = [rand(0, HEIGHT), rand(0, WIDTH)]; // random location
