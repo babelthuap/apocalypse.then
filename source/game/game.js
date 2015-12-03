@@ -7,7 +7,14 @@ app.controller('gameCtrl', function($scope, $stateParams, $auth, $state, GameSer
 
   console.log('gameCtrl running with id', $stateParams.id);
 
-  socket.emit('userlogin', $stateParams.id);
+  var turnOffKeyListener;
+
+  $scope.start = function(){
+    turnOffKeyListener = $scope.$on('keydown', (e, key) => {
+      moveOnKey[key]($scope.loc);
+    })
+    socket.emit('userlogin', $stateParams.id);
+  }
 
   $scope.logout = () => {
     $auth.logout();
@@ -18,10 +25,6 @@ app.controller('gameCtrl', function($scope, $stateParams, $auth, $state, GameSer
   var HEIGHT;
   var WIDTH;
   $scope.gameboard;
-
-  var turnOffKeyListener = $scope.$on('keydown', (e, key) => {
-    moveOnKey[key]($scope.loc);
-  })
 
   socket.on('startUser', function(data) {
     $scope.name = data.name;

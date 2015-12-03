@@ -45,7 +45,7 @@ function zombie() {
   // make a zombie
   var loc = [rand(0, HEIGHT), rand(0, WIDTH)]; // random location
   gameboard[loc[0]][loc[1]].zombie = true;
-  
+
   setInterval(function() {
     var moves = [
       [loc[0], clamp(loc[1] + 1, WIDTH - 1)],
@@ -55,8 +55,9 @@ function zombie() {
     ];
 
     var newLoc = moves[rand(0, 4)]
-    changeLoc(loc, newLoc, 'zombie');
-    loc = newLoc;
+    if (changeLoc(loc, newLoc, 'zombie')){
+      loc = newLoc;
+    }
 
   }, 500);
 }
@@ -109,36 +110,48 @@ function changeLoc(oldLoc, newLoc, asset, name, id) {
     var oldX = oldLoc[1];
     gameboard[oldY][oldX][asset] = null;
     gameboard[oldY][oldX].playerId = null;
+    var picture = gameboard[oldY][oldX].picture
+    gameboard[oldY][oldX].picture = null;
+
+
     var newY = newLoc[0];
     var newX = newLoc[1];
 
     if (gameboard[newY][newX].zombie) {
       killPlayer(id);
+      gameboard[newY][newX].picture = null;
     } else {
       gameboard[newY][newX][asset] = name;
       gameboard[newY][newX].playerId = id;
+      gameboard[newY][newX].picture = picture
     }
 
   } else if (asset === 'zombie') {
     // clear old pos
     var oldY = oldLoc[0];
     var oldX = oldLoc[1];
-    gameboard[oldY][oldX][asset] = null;
     // update new pos
     var newY = newLoc[0];
     var newX = newLoc[1];
+
+    if (gameboard[newY][newX].zombie){
+      return false;
+    }
+    gameboard[oldY][oldX][asset] = null;
 
     if (gameboard[newY][newX].player) {
       killPlayer(gameboard[newY][newX].playerId);
       gameboard[newY][newX].player = null;
       gameboard[newY][newX].playerId = null;
+      gameboard[newY][newX].picture = null;
     }
 
-    gameboard[newY][newX][asset] = true;
+    gameboard[newY][newX].zombie = true;
   }
 
   // broadcast updated gameboard to all
   io.emit('boardUpdate', gameboard);
+  return true;
 }
 
 

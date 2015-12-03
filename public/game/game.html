@@ -1,11 +1,13 @@
 <p>
+  <button ng-click="start()" class="btn btn-danger">Start</button>
   <button ng-click="logout()" class="btn btn-default">Log out</button>
 </p>
 
 <table>
   <tr ng-repeat="row in gameboard track by $index">
     <td class="cell" ng-repeat='cell in row track by $index'>
-      {{cell.player || (cell.zombie ? 'ZOMBIE' : '')}}
+      <img class="avatar" ng-src="{{cell.picture}}" ng-if="cell.picture">
+      {{cell.picture || (cell.zombie ? 'ZOMBIE' : '')}}
     </td>
   </tr>
 </table>

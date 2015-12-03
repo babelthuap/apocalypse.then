@@ -7,3 +7,9 @@
   background-color: blue;
   color: white;
 }
+
+.avatar {
+  height: calc(100vw/10);
+  width: calc(100vw/10);
+  border-radius: 50%;
+}
