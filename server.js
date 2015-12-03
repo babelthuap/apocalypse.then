@@ -68,7 +68,7 @@ io.on('connection', function(socket){
     var newX = data.newLoc[1];
     gameboard[newY][newX].player = data.name;
     // respond to user
-    socket.emit('yourNewLoc', [newY, newX]);
+    // socket.emit('yourNewLoc', [newY, newX]);
     // broadcast updated gameboard to all
     io.emit('boardUpdate', gameboard);
   });

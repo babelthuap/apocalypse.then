@@ -1,7 +1,9 @@
 .cell {
   /* add variable for cell height & width later */
-  border: 1px solid #000;
-  width: calc(100%/10);
+  /*border: 1px solid #000;*/
+  width: calc(100vw/10);
   height: calc(100vw/10);
   display: inline-block;
+  background-color: blue;
+  color: white;
 }

@@ -2,8 +2,10 @@
   <button ng-click="logout()" class="btn btn-default">Log out</button>
 </p>
 
-<div  ng-repeat="row in gameboard track by $index">
-  <div class="cell" ng-repeat='cell in row track by $index'>
-    {{cell.player || ''}}
-  </div>
-</div>
+<table>
+  <tr ng-repeat="row in gameboard track by $index">
+    <td class="cell" ng-repeat='cell in row track by $index'>
+      {{cell.player || ''}}
+    </td>
+  </tr>
+</table>

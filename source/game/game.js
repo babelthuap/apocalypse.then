@@ -30,19 +30,23 @@ app.controller('gameCtrl', function($scope, $stateParams, $auth, $state, GameSer
     $scope.gameboard = updatedBoard;
   })
 
-  socket.on('yourNewLoc', function(loc) {
-    $scope.loc = loc;
-  })
+  // socket.on('yourNewLoc', function(loc) {
+  //   $scope.loc = loc;
+  // })
 
   // clamp n to the range [0, max]
   var clamp = (n, max) => n < 0 ? 0 : (n > max ? max : n);
 
   function changePositionTo(newY, newX) {
+    if ($scope.gameboard[newY][newX].player) return;
+
     socket.emit('changeLoc', {
       oldLoc: $scope.loc,
       newLoc: [newY, newX],
       name: $scope.name
     });
+
+    $scope.loc = [newY, newX];
   }
 
   var moveOnKey = {
