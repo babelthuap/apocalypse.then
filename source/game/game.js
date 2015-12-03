@@ -80,9 +80,11 @@ app.controller('gameCtrl', function($scope, $stateParams, $auth, $state, GameSer
       name: $scope.name,
       id: $stateParams.id
     });
-
-    $scope.loc = [newY, newX];
   }
+
+  socket.on('successfulMove', funciton(newLoc){
+    $scope.loc = newLoc;
+  })
 
   var moveOnKey = {
     37: loc => { // left

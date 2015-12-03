@@ -146,7 +146,6 @@ io.on('connection', function(socket){
     gameboard[loc[0]][loc[1]].player = null;
     io.emit('boardUpdate', gameboard);
   });
-
 })
 
 // asset = 'player' or 'zombie'
@@ -154,14 +153,16 @@ function changeLoc(oldLoc, newLoc, asset, name, id) {
   if (asset === 'player') {
     var oldY = oldLoc[0];
     var oldX = oldLoc[1];
+    var newY = newLoc[0];
+    var newX = newLoc[1];
+
+    // catch race condition where two players move to the same place at the same time
+    if (gameboard[newY][newX].player) return;
+
     gameboard[oldY][oldX][asset] = null;
     gameboard[oldY][oldX].playerId = null;
     var picture = gameboard[oldY][oldX].picture
     gameboard[oldY][oldX].picture = null;
-
-
-    var newY = newLoc[0];
-    var newX = newLoc[1];
 
     if (gameboard[newY][newX].zombie) {
       killPlayer(id);
@@ -192,6 +193,7 @@ function changeLoc(oldLoc, newLoc, asset, name, id) {
       gameboard[newY][newX].picture = null;
     }
 
+    socket.emit('successfulMove', newLoc);
     gameboard[newY][newX].zombie = true;
   }
 

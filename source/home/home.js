@@ -5,6 +5,8 @@ var app = angular.module('app');
 app.controller('homeCtrl', function($scope, $rootScope, $auth, $state, socket) {
   console.log('homeCtrl running');
 
+  $auth.logout();
+
   $scope.authenticate = provider => {
     $auth.authenticate(provider)
     .then(res => {
