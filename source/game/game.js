@@ -14,11 +14,61 @@ app.controller('gameCtrl', function($scope, $stateParams, $auth, $state, GameSer
     $state.go('home');
   }
 
+  var height;
+  var width;
   $scope.gameboard;
 
-  socket.on('boardUpdate', function(data) {
-    console.log('data:', data);
-    $scope.gameboard = data;
+  socket.on('startUser', function(data) {
+    $scope.name = data.name;
+    $scope.loc = data.loc;
+    height = data.height;
+    width = data.width;
+  })
+
+  socket.on('boardUpdate', function(updatedBoard) {
+    console.log('updatedBoard:', updatedBoard);
+    $scope.gameboard = updatedBoard;
+  })
+
+  socket.on('yourNewLoc', function(loc) {
+    $scope.loc = loc;
+  })
+
+  // clamp n to the range [0, max]
+  var clamp = (n, max) => n < 0 ? 0 : (n > max ? max : n);
+
+  function changePositionTo(newY, newX) {
+    socket.emit('changeLoc', {
+      oldLoc: $scope.loc,
+      newLoc: [newY, newX],
+      name: $scope.name
+    });
+  }
+
+  var moveOnKey = {
+    37: loc => { // left
+      var newX = loc[1] - 1;
+      changePositionTo(loc[0], clamp(newX, width - 1)); // clamp makes sure position stays in gameboard
+    },
+    38: loc => { // up
+      var newY = loc[0] - 1;
+      changePositionTo(clamp(newY, height - 1), loc[1]);
+    },
+    39: loc => { // right
+      var newX = loc[1] + 1;
+      changePositionTo(loc[0], clamp(newX, width - 1));
+    },
+    40: loc => { // down
+      var newY = loc[0] + 1;
+      changePositionTo(clamp(newY, height - 1), loc[1]);
+    }
+  }
+
+  $scope.$on('keydown', (e, key) => {
+    console.log('key pressed:', key);
+    // var loc = $scope.player.location;
+    moveOnKey[key]($scope.loc);
+    // socket.emit('keypress', key);
   })
 
 
@@ -29,8 +79,8 @@ app.controller('gameCtrl', function($scope, $stateParams, $auth, $state, GameSer
 
 
 
-  // $scope.player;
-  // var height, width;
+  $scope.player;
+  var height, width;
 
   // GameService.getBoardState().then(res => {
 
@@ -50,40 +100,8 @@ app.controller('gameCtrl', function($scope, $stateParams, $auth, $state, GameSer
   //   console.error(err);
   // });
 
-  // function changePositionTo(newY, newX) {
-  //   var loc = $scope.player.location; 
-  //   $scope.gameboard[loc[0]][loc[1]] = 0;              // clear old position
-  //   $scope.gameboard[newY][newX] = $scope.player.name; // draw player at new position
-  //   $scope.player.location = [newY, newX];             // set new player location
-  // }
 
-  // // clamp n to the range [0, max]
-  // var clamp = (n, max) => n < 0 ? 0 : (n > max ? max : n);
 
-  // var moveOnKey = {
-  //   37: loc => { // left
-  //     var newX = loc[1] - 1;
-  //     changePositionTo(loc[0], clamp(newX, width - 1)); // clamp makes sure position stays in gameboard
-  //   },
-  //   38: loc => { // up
-  //     var newY = loc[0] - 1;
-  //     changePositionTo(clamp(newY, height - 1), loc[1]);
-  //   },
-  //   39: loc => { // right
-  //     var newX = loc[1] + 1;
-  //     changePositionTo(loc[0], clamp(newX, width - 1));
-  //   },
-  //   40: loc => { // down
-  //     var newY = loc[0] + 1;
-  //     changePositionTo(clamp(newY, height - 1), loc[1]);
-  //   }
-  // }
 
-  // $scope.$on('keydown', (e, key) => {
-  //   console.log('key pressed:', key);
-  //   var loc = $scope.player.location;
-  //   moveOnKey[key](loc);
-  //   socket.emit('keypress', key);
-  // })
 
 })

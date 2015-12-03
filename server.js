@@ -45,12 +45,33 @@ io.on('connection', function(socket){
       if (err) return;
 
       var name = user.displayName;
-      var loc = [rand(0, HEIGHT), rand(0, WIDTH)];
-      gameboard[loc[0]][loc[1]].player = 'name';
+      var loc = [rand(0, HEIGHT), rand(0, WIDTH)]; // random location
+      gameboard[loc[0]][loc[1]].player = name;
 
-      io.emit('boardUpdate', gameboard);
+      socket.emit('startUser', {
+        name: name,
+        loc: loc,
+        height: HEIGHT,
+        width: WIDTH
+      }); // respond to user
+      io.emit('boardUpdate', gameboard); // broadcast to all
     })
-  }); 
+  });
+  socket.on('changeLoc', data => {
+    console.log('changeLoc data:', data);
+    // clear old pos
+    var oldY = data.oldLoc[0];
+    var oldX = data.oldLoc[1];
+    gameboard[oldY][oldX].player = null;
+    // update new pos
+    var newY = data.newLoc[0];
+    var newX = data.newLoc[1];
+    gameboard[newY][newX].player = data.name;
+    // respond to user
+    socket.emit('yourNewLoc', [newY, newX]);
+    // broadcast updated gameboard to all
+    io.emit('boardUpdate', gameboard);
+  });
 
 
 })
