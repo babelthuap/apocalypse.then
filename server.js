@@ -138,6 +138,7 @@ io.on('connection', function(socket){
 
   socket.on('changeLoc', data => {
     changeLoc(data.oldLoc, data.newLoc, 'player', data.name, data.id);
+
   });
 
   socket.on('logout', loc => {
@@ -173,6 +174,9 @@ function changeLoc(oldLoc, newLoc, asset, name, id) {
       gameboard[newY][newX].picture = picture
     }
 
+    // move completed successfully - inform user
+    socket.emit('successfulMove', newLoc);
+
   } else if (asset === 'zombie') {
     // clear old pos
     var oldY = oldLoc[0];
@@ -192,8 +196,6 @@ function changeLoc(oldLoc, newLoc, asset, name, id) {
       gameboard[newY][newX].playerId = null;
       gameboard[newY][newX].picture = null;
     }
-
-    socket.emit('successfulMove', newLoc);
     gameboard[newY][newX].zombie = true;
   }
 
