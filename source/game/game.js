@@ -82,7 +82,7 @@ app.controller('gameCtrl', function($scope, $stateParams, $auth, $state, GameSer
     });
   }
 
-  socket.on('successfulMove', funciton(newLoc){
+  socket.on('successfulMove', function(newLoc){
     $scope.loc = newLoc;
   })
 
