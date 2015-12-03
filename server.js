@@ -158,7 +158,7 @@ function changeLoc(oldLoc, newLoc, asset, name, id) {
     var newX = newLoc[1];
 
     // catch race condition where two players move to the same place at the same time
-    if (gameboard[newY][newX].player) return;
+    // if (gameboard[newY][newX].player) return;
 
     gameboard[oldY][oldX][asset] = null;
     gameboard[oldY][oldX].playerId = null;
@@ -175,7 +175,7 @@ function changeLoc(oldLoc, newLoc, asset, name, id) {
     }
 
     // move completed successfully - inform user
-    socket.emit('successfulMove', newLoc);
+    // socket.emit('successfulMove', newLoc);
 
   } else if (asset === 'zombie') {
     // clear old pos

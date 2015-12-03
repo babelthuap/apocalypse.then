@@ -26,7 +26,7 @@ table {
 }
 
 .background {
-  background-image: url("http://www.ricknightmare.com/wp-content/uploads/2013/09/horror-writing-BG-5.jpg");
+  background-image: url("assets/background.jpg");
   background-size: cover;
   background-repeat: no-repeat;
 }

@@ -15,7 +15,7 @@ const paths = {
   codesrc: 'source/**/*.js',
   htmlsrc: 'source/**/*.html',
   csssrc: 'source/**/*.css',
-  musicsrc: 'source/**/*.mp3',
+  assetssrc: 'source/**/*.*',
   dest: 'public'
 }
 
@@ -33,7 +33,7 @@ gulp.task('build', ['clean', 'bower'], function() {
     .pipe(uglify())
     .pipe(addsrc(paths.htmlsrc))
     .pipe(addsrc(paths.csssrc))
-    .pipe(addsrc(paths.musicsrc))
+    .pipe(addsrc(paths.assetssrc))
     .pipe(gulp.dest(paths.dest))
     .on('error', gutil.log);
 });
