@@ -20,7 +20,7 @@ var rand = (min, max) => min + Math.floor((max - min) * Math.random());
 
 var cell = {
   player: null,
-  zombie: false
+  zombie: null
 };
 
 var HEIGHT = 5;
@@ -36,6 +36,29 @@ for (var row = 0; row < HEIGHT; row++) {
   gameboard.push(newRow);
 }
 
+var clamp = (n, max) => n < 0 ? 0 : (n > max ? max : n);
+
+
+function zombie() {
+  // make a zombie
+  var loc = [rand(0, HEIGHT), rand(0, WIDTH)]; // random location
+  gameboard[loc[0]][loc[1]].zombie = true;
+  
+  setInterval(function() {
+    var moves = [
+      [loc[0], clamp(loc[1] + 1, WIDTH - 1)],
+      [loc[0], clamp(loc[1] - 1, WIDTH - 1)],
+      [clamp(loc[0] + 1, HEIGHT - 1), loc[1]],
+      [clamp(loc[0] - 1, HEIGHT - 1), loc[1]]
+    ];
+
+    var newLoc = moves[rand(0, 4)]
+
+    changeLoc(loc, newLoc, 'zombie');
+    loc = newLoc;
+  }, 500);
+}
+
 io.on('connection', function(socket){
   console.log('connected');
   socket.on('keypress', data => console.log(data));
@@ -44,6 +67,9 @@ io.on('connection', function(socket){
     User.findById(id, (err, user) => {
       if (err) return;
 
+      // OH NO! A ZOMBIE!
+      zombie();
+
       var name = user.displayName;
       var loc = [rand(0, HEIGHT), rand(0, WIDTH)]; // random location
       gameboard[loc[0]][loc[1]].player = name;
@@ -51,30 +77,32 @@ io.on('connection', function(socket){
       socket.emit('startUser', {
         name: name,
         loc: loc,
-        height: HEIGHT,
-        width: WIDTH
+        HEIGHT: HEIGHT,
+        WIDTH: WIDTH
       }); // respond to user
       io.emit('boardUpdate', gameboard); // broadcast to all
     })
   });
   socket.on('changeLoc', data => {
     console.log('changeLoc data:', data);
-    // clear old pos
-    var oldY = data.oldLoc[0];
-    var oldX = data.oldLoc[1];
-    gameboard[oldY][oldX].player = null;
-    // update new pos
-    var newY = data.newLoc[0];
-    var newX = data.newLoc[1];
-    gameboard[newY][newX].player = data.name;
-    // respond to user
-    // socket.emit('yourNewLoc', [newY, newX]);
-    // broadcast updated gameboard to all
-    io.emit('boardUpdate', gameboard);
+    changeLoc(data.oldLoc, data.newLoc, 'player', data.name);
   });
 
-
 })
+
+// asset = 'player' or 'zombie'
+function changeLoc(oldLoc, newLoc, asset, name) {
+  // clear old pos
+  var oldY = oldLoc[0];
+  var oldX = oldLoc[1];
+  gameboard[oldY][oldX][asset] = null;
+  // update new pos
+  var newY = newLoc[0];
+  var newX = newLoc[1];
+  gameboard[newY][newX][asset] = name || true;
+  // broadcast updated gameboard to all
+  io.emit('boardUpdate', gameboard);
+}
 
 
 

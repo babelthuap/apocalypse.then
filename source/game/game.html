@@ -5,7 +5,7 @@
 <table>
   <tr ng-repeat="row in gameboard track by $index">
     <td class="cell" ng-repeat='cell in row track by $index'>
-      {{cell.player || ''}}
+      {{cell.player || (cell.zombie ? 'ZOMBIE' : '')}}
     </td>
   </tr>
 </table>
