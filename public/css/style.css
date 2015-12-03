@@ -54,5 +54,12 @@ table {
   top: 50%;
   font-size: 1000%;
   color: red;
+}
 
+.timer {
+  position: absolute;
+  right: 6%;
+  top: -8%;
+  font-size: 1000%;
+  color: red;
 }

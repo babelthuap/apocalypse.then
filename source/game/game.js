@@ -9,6 +9,8 @@ app.controller('gameCtrl', function($scope, $stateParams, $auth, $state, GameSer
 
   var turnOffKeyListener;
 
+  var timer;
+
   $scope.start = function(){
     turnOffKeyListener = $scope.$on('keydown', (e, key) => {
       moveOnKey[key]($scope.loc);
@@ -16,6 +18,11 @@ app.controller('gameCtrl', function($scope, $stateParams, $auth, $state, GameSer
     socket.emit('userlogin', $stateParams.id);
     $scope.death = false;
     $scope.playing = true;
+
+    $scope.time = 0;
+    timer = setInterval(function(){
+      $scope.time++;
+    }, 1000)
   }
 
   $scope.logout = () => {
@@ -46,6 +53,7 @@ app.controller('gameCtrl', function($scope, $stateParams, $auth, $state, GameSer
       turnOffKeyListener();
       $scope.death = true;
       $scope.playing = false;
+      clearInterval(timer);
     }
   })
 
