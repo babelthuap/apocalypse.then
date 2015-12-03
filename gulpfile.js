@@ -15,7 +15,7 @@ const paths = {
   codesrc: 'source/**/*.js',
   htmlsrc: 'source/**/*.html',
   csssrc: 'source/**/*.css',
-  assetssrc: 'source/**/*.*',
+  assetssrc: ['source/**/*.mp3', 'source/**/*.jpg', 'source/**/*.gif'],
   dest: 'public'
 }
 
