@@ -48,13 +48,20 @@ function zombie() {
 
   setInterval(function() {
     var moves = [
-      [loc[0], clamp(loc[1] + 1, WIDTH - 1)],
-      [loc[0], clamp(loc[1] - 1, WIDTH - 1)],
-      [clamp(loc[0] + 1, HEIGHT - 1), loc[1]],
-      [clamp(loc[0] - 1, HEIGHT - 1), loc[1]]
+      [loc[0], clamp(loc[1] + 1, WIDTH - 1)],  // right
+      [loc[0], clamp(loc[1] - 1, WIDTH - 1)],  // left
+      [clamp(loc[0] + 1, HEIGHT - 1), loc[1]], // down
+      [clamp(loc[0] - 1, HEIGHT - 1), loc[1]]  // up
     ];
+    // check vicinity for players
+    var newLoc = moves[rand(0, 4)];
+    for (var i = 0; i < 4; i++){
+      if (gameboard[moves[i][0]][moves[i][1]].player){
+        newLoc = moves[i];
+        break;
+      }
+    }
 
-    var newLoc = moves[rand(0, 4)]
     if (changeLoc(loc, newLoc, 'zombie')){
       loc = newLoc;
     }
