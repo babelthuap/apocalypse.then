@@ -11,12 +11,17 @@ app.controller('gameCtrl', function($scope, $stateParams, $auth, $state, GameSer
 
   $scope.logout = () => {
     $auth.logout();
+    socket.emit('logout', $scope.loc);
     $state.go('home');
   }
 
   var HEIGHT;
   var WIDTH;
   $scope.gameboard;
+
+  var turnOffKeyListener = $scope.$on('keydown', (e, key) => {
+    moveOnKey[key]($scope.loc);
+  })
 
   socket.on('startUser', function(data) {
     $scope.name = data.name;
@@ -26,8 +31,16 @@ app.controller('gameCtrl', function($scope, $stateParams, $auth, $state, GameSer
   })
 
   socket.on('boardUpdate', function(updatedBoard) {
-    console.log('updatedBoard:', updatedBoard);
     $scope.gameboard = updatedBoard;
+  })
+
+  socket.on('playerDeath', function(id) {
+    console.log('somebody died:', id);
+    if (id === $stateParams.id) {
+      $scope.loc = null;
+      turnOffKeyListener();
+      alert('YOU DEAD');
+    }
   })
 
   // clamp n to the range [0, max]
@@ -39,7 +52,8 @@ app.controller('gameCtrl', function($scope, $stateParams, $auth, $state, GameSer
     socket.emit('changeLoc', {
       oldLoc: $scope.loc,
       newLoc: [newY, newX],
-      name: $scope.name
+      name: $scope.name,
+      id: $stateParams.id
     });
 
     $scope.loc = [newY, newX];
@@ -63,9 +77,5 @@ app.controller('gameCtrl', function($scope, $stateParams, $auth, $state, GameSer
       changePositionTo(clamp(newY, HEIGHT - 1), loc[1]);
     }
   }
-
-  $scope.$on('keydown', (e, key) => {
-    moveOnKey[key]($scope.loc);
-  })
 
 })

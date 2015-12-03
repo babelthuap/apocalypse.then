@@ -20,11 +20,13 @@ var rand = (min, max) => min + Math.floor((max - min) * Math.random());
 
 var cell = {
   player: null,
+  playerId: null,
+  picture: null,
   zombie: null
 };
 
-var HEIGHT = 5;
-var WIDTH = 10;
+var HEIGHT = 4;
+var WIDTH = 7;
 var gameboard = [];
 
 // generate fresh gameboard
@@ -53,9 +55,9 @@ function zombie() {
     ];
 
     var newLoc = moves[rand(0, 4)]
-
     changeLoc(loc, newLoc, 'zombie');
     loc = newLoc;
+
   }, 500);
 }
 
@@ -73,6 +75,9 @@ io.on('connection', function(socket){
       var name = user.displayName;
       var loc = [rand(0, HEIGHT), rand(0, WIDTH)]; // random location
       gameboard[loc[0]][loc[1]].player = name;
+      gameboard[loc[0]][loc[1]].playerId = id;
+      gameboard[loc[0]][loc[1]].picture = user.picture;
+
 
       socket.emit('startUser', {
         name: name,
@@ -83,25 +88,63 @@ io.on('connection', function(socket){
       io.emit('boardUpdate', gameboard); // broadcast to all
     })
   });
+
   socket.on('changeLoc', data => {
-    console.log('changeLoc data:', data);
-    changeLoc(data.oldLoc, data.newLoc, 'player', data.name);
+    changeLoc(data.oldLoc, data.newLoc, 'player', data.name, data.id);
+  });
+
+  socket.on('logout', loc => {
+    console.log('loc:', loc);
+    if (!loc) return;
+    gameboard[loc[0]][loc[1]].player = null;
+    io.emit('boardUpdate', gameboard);
   });
 
 })
 
 // asset = 'player' or 'zombie'
-function changeLoc(oldLoc, newLoc, asset, name) {
-  // clear old pos
-  var oldY = oldLoc[0];
-  var oldX = oldLoc[1];
-  gameboard[oldY][oldX][asset] = null;
-  // update new pos
-  var newY = newLoc[0];
-  var newX = newLoc[1];
-  gameboard[newY][newX][asset] = name || true;
+function changeLoc(oldLoc, newLoc, asset, name, id) {
+  if (asset === 'player') {
+    var oldY = oldLoc[0];
+    var oldX = oldLoc[1];
+    gameboard[oldY][oldX][asset] = null;
+    gameboard[oldY][oldX].playerId = null;
+    var newY = newLoc[0];
+    var newX = newLoc[1];
+
+    if (gameboard[newY][newX].zombie) {
+      killPlayer(id);
+    } else {
+      gameboard[newY][newX][asset] = name;
+      gameboard[newY][newX].playerId = id;
+    }
+
+  } else if (asset === 'zombie') {
+    // clear old pos
+    var oldY = oldLoc[0];
+    var oldX = oldLoc[1];
+    gameboard[oldY][oldX][asset] = null;
+    // update new pos
+    var newY = newLoc[0];
+    var newX = newLoc[1];
+
+    if (gameboard[newY][newX].player) {
+      killPlayer(gameboard[newY][newX].playerId);
+      gameboard[newY][newX].player = null;
+      gameboard[newY][newX].playerId = null;
+    }
+
+    gameboard[newY][newX][asset] = true;
+  }
+
   // broadcast updated gameboard to all
   io.emit('boardUpdate', gameboard);
+}
+
+
+function killPlayer(id) {
+  console.log(id);
+  io.emit('playerDeath', id);
 }
 
 
