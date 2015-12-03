@@ -12,8 +12,6 @@
         <div class="fieldOfView" ng-if="!playing || closeToPlayer($parent.$index, $index)">
           <img class="avatar" alt="player" ng-src="{{cell.picture}}" ng-if="cell.picture">
           <img class="zombie" src="http://vignette2.wikia.nocookie.net/megamitensei/images/7/71/SMT_IF_zombie_teacher_sprite.gif" alt="zombie" ng-if="cell.zombie">
-          <span ng-if="!cell.picture && !cell.zombie">&nbsp;<br>&nbsp;</span>
-
         </div>
 
       </td>

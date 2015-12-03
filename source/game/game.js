@@ -16,6 +16,7 @@ app.controller('gameCtrl', function($scope, $stateParams, $auth, $state, GameSer
 
   var VIEW_RADIUS = 5;
   $scope.closeToPlayer = function(y, x){
+    if (!$scope.loc) return true;
     var locY = $scope.loc[0];
     var locX = $scope.loc[1];
     return (locY - y)*(locY - y) + (locX - x)*(locX - x) < VIEW_RADIUS*VIEW_RADIUS;

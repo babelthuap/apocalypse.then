@@ -95,7 +95,7 @@ function zombie() {
       loc = newLoc;
     }
 
-  }, rand(300, 600));
+  }, rand(1000, 2000));
 }
 
 for (var i = 0; i < HEIGHT; i++){

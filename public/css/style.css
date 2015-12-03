@@ -1,35 +1,23 @@
 .cell {
   /* add variable for cell height & width later */
-  /*border: 1px solid white;*/
-  width: calc(100vw/33);
-  height: calc(100vw/33);
-  /*display: inline-block;*/
-  /*background-color: blue;*/
-  /*color: white;*/
-  /*margin: 0;
-  padding: 0;*/
+  width: calc(100vw/32);
+  height: calc(100vw/32);
 }
 
 .avatar {
-  height: calc(100vw/32);
-  /*width: calc(100vw/33);*/
+  height: calc(100vw/33);
   border-radius: 50%;
 }
 
 .zombie {
-  height: calc(100vw/32);
+  height: calc(100vw/33);
 }
 
 body {
   background-color: black;
   color: white;
   text-align: center;
-  /*font-family: 'Permanent Marker', cursive;*/
-  /*font-family: 'Rock Salt', cursive;*/
-  /*font-family: 'Nothing You Could Do', cursive;*/
-  /*font-family: 'Reenie Beanie', cursive;*/
   font-family: 'Annie Use Your Telescope', cursive;
-  /*font-family: 'The Girl Next Door', cursive;*/
 }
 
 table {
@@ -65,5 +53,7 @@ table {
 }
 
 .fieldOfView {
-  background: rgba(255, 255, 255, 0.26)
+  background: rgba(255, 255, 255, 0.26);
+  height: 100%;
+  width: 100%;
 }
