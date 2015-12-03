@@ -53,12 +53,41 @@ function zombie() {
       [clamp(loc[0] + 1, HEIGHT - 1), loc[1]], // down
       [clamp(loc[0] - 1, HEIGHT - 1), loc[1]]  // up
     ];
-    // check vicinity for players
+
+    // generate array of vicinity positions
+    var vicinity = [];
+    const SEARCH_RANGE = 6;
+    for (var dy = -SEARCH_RANGE; dy <= SEARCH_RANGE; dy++){
+      for (var dx = -SEARCH_RANGE; dx <= SEARCH_RANGE; dx++){
+        vicinity.push([clamp(loc[0] + dy, HEIGHT-1), clamp(loc[1] + dx, WIDTH-1)]);
+      }
+    }
+
+    // check new zombie location against all vicinity positions
+    // if player is present, move towards player location
     var newLoc = moves[rand(0, 4)];
-    for (var i = 0; i < 4; i++){
-      if (gameboard[moves[i][0]][moves[i][1]].player){
-        newLoc = moves[i];
-        break;
+    for (var i = 0; i < vicinity.length; i++){
+      var testLoc = gameboard[vicinity[i][0]][vicinity[i][1]];
+      if (testLoc.player){
+        var playerY = vicinity[i][0]
+        var playerX = vicinity[i][1]
+
+        if (playerY > loc[0]){  // player is below zombie
+          newLoc = moves[2];
+          break;
+        }
+        if (playerY < loc[0]){  // player is above zombie
+          newLoc = moves[3];
+          break;
+        }
+        if (playerX > loc[1]){  // player is right of zombie
+          newLoc = moves[0];
+          break;
+        }
+        if (playerX < loc[1]){  // player is left of zombie
+          newLoc = moves[1];
+          break;
+        }
       }
     }
 
@@ -66,7 +95,7 @@ function zombie() {
       loc = newLoc;
     }
 
-  }, rand(300, 1000));
+  }, rand(300, 600));
 }
 
 for (var i = 0; i < HEIGHT; i++){
