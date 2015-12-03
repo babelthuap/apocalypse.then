@@ -11,10 +11,20 @@ app.controller('gameCtrl', function($scope, $stateParams, $auth, $state, GameSer
 
   var timer;
 
+  $scope.playing = false;
+  $scope.loc;
+
+  var VIEW_RADIUS = 5;
+  $scope.closeToPlayer = function(y, x){
+    var locY = $scope.loc[0];
+    var locX = $scope.loc[1];
+    return (locY - y)*(locY - y) + (locX - x)*(locX - x) < VIEW_RADIUS*VIEW_RADIUS;
+  }
+
   $scope.start = function(){
     turnOffKeyListener = $scope.$on('keydown', (e, key) => {
       moveOnKey[key]($scope.loc);
-    })
+    });
     socket.emit('userlogin', $stateParams.id);
     $scope.death = false;
     $scope.playing = true;

@@ -3,21 +3,21 @@
   /*border: 1px solid white;*/
   width: calc(100vw/33);
   height: calc(100vw/33);
-  display: inline-block;
+  /*display: inline-block;*/
   /*background-color: blue;*/
-  color: white;
-  margin: 0;
-  padding: 0;
+  /*color: white;*/
+  /*margin: 0;
+  padding: 0;*/
 }
 
 .avatar {
-  height: calc(100vw/33);
-  width: calc(100vw/33);
+  height: calc(100vw/32);
+  /*width: calc(100vw/33);*/
   border-radius: 50%;
 }
 
 .zombie {
-  height: calc(100vw/33);
+  height: calc(100vw/32);
 }
 
 body {
@@ -62,4 +62,8 @@ table {
   top: -8%;
   font-size: 1000%;
   color: red;
+}
+
+.fieldOfView {
+  background: rgba(255, 255, 255, 0.26)
 }
