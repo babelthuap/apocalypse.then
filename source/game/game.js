@@ -14,6 +14,8 @@ app.controller('gameCtrl', function($scope, $stateParams, $auth, $state, GameSer
       moveOnKey[key]($scope.loc);
     })
     socket.emit('userlogin', $stateParams.id);
+    $scope.death = false;
+    $scope.playing = true;
   }
 
   $scope.logout = () => {
@@ -42,7 +44,8 @@ app.controller('gameCtrl', function($scope, $stateParams, $auth, $state, GameSer
     if (id === $stateParams.id) {
       $scope.loc = null;
       turnOffKeyListener();
-      alert('YOU DEAD');
+      $scope.death = true;
+      $scope.playing = false;
     }
   })
 

@@ -1,5 +1,5 @@
 <p>
-  <button ng-click="start()" class="btn btn-danger">Start</button>
+  <button ng-click="start()" class="btn btn-danger" ng-hide="playing">Start</button>
   <button ng-click="logout()" class="btn btn-default">Log out</button>
 </p>
 
@@ -13,5 +13,7 @@
         <!-- {{cell.picture || (cell.zombie ? 'ZOMBIE' : '')}} -->
       </td>
     </tr>
-  </table>  
+  </table>
 </div>
+
+<h1 ng-show="death" class="death">you died <br> zombies win</h1>

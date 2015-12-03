@@ -76,7 +76,15 @@ io.on('connection', function(socket){
 
 
       var name = user.displayName;
-      var loc = [rand(0, HEIGHT), rand(0, WIDTH)]; // random location
+      var loc;
+      function generateLoc(){
+        loc = [rand(0, HEIGHT), rand(0, WIDTH)];
+        if (gameboard[loc[0]][loc[1]].zombie || gameboard[loc[0]][loc[1]].player){
+          generateLoc();
+        }
+      }
+      generateLoc();    // random location
+
       gameboard[loc[0]][loc[1]].player = name;
       gameboard[loc[0]][loc[1]].playerId = id;
       gameboard[loc[0]][loc[1]].picture = user.picture;
